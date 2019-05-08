@@ -42,27 +42,114 @@ public class BST {
             }
         }
     }
-    
-    public Node findMin () {
+
+    public Node findMin() {
         Node current = root;
         Node previous = null;
-        
-        while(current != null) {
+
+        while (current != null) {
             previous = current;
             current = current.leftChild;
         }
         return previous;
     }
-    
-    public Node findMax () {
+
+    public Node findMax() {
         Node current = root;
         Node previous = null;
-        
-        while(current != null) {
+
+        while (current != null) {
             previous = current;
             current = current.rightChild;
         }
         return previous;
     }
-    
+
+    public boolean remove(int key) {
+        Node current = root;
+        Node parent = root;
+
+        boolean isLeftChild = false;
+
+        while (current.key != key) {
+            parent = current;
+            if (key < current.key) {
+                isLeftChild = true;
+                current = current.leftChild;
+            } else {
+                current = current.rightChild;
+                isLeftChild = false;
+            }
+            if (current == null) {
+                return false;
+            }
+
+        }
+
+        // if node is a leaf
+        Node nodeToDelete = current;
+        if (nodeToDelete.leftChild == null && nodeToDelete.rightChild == null) {
+            if (nodeToDelete == root) {
+                root = null;
+            } else if (isLeftChild) {
+                parent.leftChild = null;
+            } else {
+                parent.rightChild = null;
+            }
+        } // if node has one child that is on the left
+        else if (nodeToDelete.rightChild == null) {
+            if (nodeToDelete == root) {
+                root = nodeToDelete.leftChild;
+            } else if (isLeftChild) {
+                parent.leftChild = nodeToDelete.leftChild;
+            } else {
+                parent.rightChild = nodeToDelete.leftChild;
+            }
+        } // if node has one child that is on the right
+        else if (nodeToDelete.leftChild == null) {
+            if (nodeToDelete == root) {
+                root = nodeToDelete.rightChild;
+            } else if (isLeftChild) {
+                parent.leftChild = nodeToDelete.rightChild;
+            } else {
+                parent.rightChild = nodeToDelete.rightChild;
+            }
+        } // if node has two children (tricky)
+        else {
+            Node successor = getSuccessor(nodeToDelete);
+
+            // connect parent nodeToDelete to successor instead
+            if (nodeToDelete == root) {
+                root = successor;
+            } else if (isLeftChild) {
+                parent.leftChild = successor;
+            } else {
+                parent.rightChild = successor;
+            }
+
+            successor.leftChild = nodeToDelete.leftChild;
+        }
+        return true;
+    }
+
+    private Node getSuccessor(Node nodeToDelete) {
+        Node successorParent = nodeToDelete;
+        Node successor = nodeToDelete;
+
+        Node current = nodeToDelete.rightChild;  // go to the right child
+
+        while (current != null) { // start going down the tree untill the node hase no left child
+            successorParent = successor;
+            successor = current;
+        }
+
+        // if the successor is not the right child
+        if (successor != nodeToDelete.rightChild) {
+            successorParent.leftChild = successor.rightChild;
+            successor.rightChild = nodeToDelete.rightChild;
+        }
+
+        return successor;
+    }
+
 }
