@@ -71,6 +71,7 @@ public class BST {
 
         boolean isLeftChild = false;
 
+        // search for an item
         while (current.key != key) {
             parent = current;
             if (key < current.key) {
@@ -141,6 +142,7 @@ public class BST {
         while (current != null) { // start going down the tree untill the node hase no left child
             successorParent = successor;
             successor = current;
+            current = current.leftChild;
         }
 
         // if the successor is not the right child

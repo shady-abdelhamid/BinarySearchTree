@@ -18,12 +18,17 @@ public class Main {
         BST tree = new BST();
         tree.insert(10, "Ten");
         tree.insert(20, "Twenty");
+        tree.insert(5, "Five");
+        tree.insert(6, "Six");
+        tree.insert(16, "Sixteen");
+        tree.insert(2, "Two");
+        tree.insert(3, "Three");
         tree.insert(15, "Fifteen");
         
         System.out.println(tree.findMin().key);
         System.out.println(tree.findMax().key);
         
-        System.out.println(tree.remove(10));
+        System.out.println(tree.remove(5));
         System.out.println(tree.findMin().key);
         
 
